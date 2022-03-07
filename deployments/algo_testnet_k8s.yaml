@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: algorand-testnet
+  labels:
+    app: mylabel
+spec:
+  clusterIP: None
+  selector:
+    matchLabels:
+      app: mylabel
+  template:
+    metadata:
+      labels:
+        app: mylabel
+    spec:
+      containers:
+      - name: algod
+        image: algo_testnet_docker_image
+        command:
+          - /bin/sh
+          - -c
+          - ./goal network start -r /network && sleep infinity
+        ports:
+          - containerPort: 8080
+            name: algod
+            protocol: TCP
