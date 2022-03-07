@@ -1,4 +1,4 @@
-module github.com/neurotempest/algo_devnet.git
+module github.com/neurotempest/algo_devnet
 
 go 1.17
 
