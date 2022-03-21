@@ -40,6 +40,7 @@ func listenAndServeForever(
 ) {
 	go func() {
 		srv := http.Server{Addr: address, Handler: r}
+		log.Println("Hello fgsda")
 		log.Println("Healthcheck listening at", address)
 		if err := srv.ListenAndServe(); err != nil {
 			log.Fatal(err)
