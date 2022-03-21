@@ -1,0 +1,4 @@
+Generate new jwt priv/pub keys by running:
+```
+openssl req -new -newkey rsa:4096 -nodes -keyout private.key -out public.csr
+```

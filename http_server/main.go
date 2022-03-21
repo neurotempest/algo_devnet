@@ -6,16 +6,23 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"flag"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/neurotempest/algo_devnet/http_server/ops"
 )
 
-func main() {
-	r := httprouter.New()
-	ops.RegisterRoutes(r)
+var (
+	baseURL = flag.String("url", "localhost:1234", "Base URL for http server")
+)
 
-	listenAndServeForever(r, "localhost:1234")
+func main() {
+	flag.Parse()
+
+	r := httprouter.New()
+	ops.RegisterRoutes(r, *baseURL)
+
+	listenAndServeForever(r, *baseURL)
 
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGTERM, syscall.SIGINT)
