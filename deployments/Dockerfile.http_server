@@ -1,7 +1,8 @@
 FROM alpine
 WORKDIR /app
 ADD http_server/priv priv
+add algorand/token priv/algod.token
 ADD http_server/static static
 ADD http_server/templates templates
 ADD build build
-ENTRYPOINT build/http-server-go
+ENTRYPOINT build/http-server-go --algod_host="http://algorand:4001"

@@ -1,27 +1,47 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: v1
+kind: Service
 metadata:
-  name: algorand-testnet
+  name: algorand
   labels:
-    app: mylabel
+    app: algorand
 spec:
   clusterIP: None
   selector:
+    app: algorand
+  ports:
+  - name: algod
+    port: 4001
+    targetPort: algod
+  #- name: kmd
+  #  port: 4002
+  #  targetPort: kmd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: algorand
+spec:
+  selector:
     matchLabels:
-      app: mylabel
+      app: algorand
   template:
     metadata:
       labels:
-        app: mylabel
+        app: algorand
     spec:
       containers:
       - name: algod
-        image: algo_testnet_docker_image
+        image: algo_testnet
         command:
           - /bin/sh
           - -c
           - ./goal network start -r /network && sleep infinity
         ports:
-          - containerPort: 8080
+          - containerPort: 4001
             name: algod
             protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 4001
+          initialDelaySeconds: 3

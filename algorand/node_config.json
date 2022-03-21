@@ -3,6 +3,6 @@
 	"GossipFanout": 1,
 	"IncomingConnectionsLimit": 0,
 	"DNSBootstrapID": "",
-  "EndpointAddress": "0.0.0.0:8080",
+  "EndpointAddress": "0.0.0.0:4001",
 	"EnableProfiler": true
 }

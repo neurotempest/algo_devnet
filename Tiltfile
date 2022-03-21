@@ -3,17 +3,17 @@
 load('ext://restart_process', 'docker_build_with_restart')
 
 docker_build(
-  ref='algo_testnet_docker_image',
-  context='.',
+  ref='algo_testnet',
+  context='./algorand',
   dockerfile='deployments/Dockerfile.algo',
 )
 
 k8s_yaml('deployments/algo_testnet_k8s.yaml')
 
 k8s_resource(
-  'algorand-testnet',
+  'algorand',
   port_forwards = [
-      port_forward(8080, name = "Algorand RPC", host = 'localhost'),
+      port_forward(4001, name = "Algorand RPC", host = 'localhost'),
   ],
 )
 
@@ -28,9 +28,10 @@ local_resource(
 docker_build_with_restart(
   ref='http-server-image',
   context='.',
-  entrypoint=['/app/build/http-server-go'],
+  entrypoint=['/app/build/http-server-go', '--algod_host=http://algorand:4001'],
   dockerfile='deployments/Dockerfile.http_server',
   only=[
+    './algorand/token',
     './build',
     './http_server/priv',
     './http_server/static',
@@ -48,6 +49,6 @@ k8s_yaml('deployments/http_server_k8s.yaml')
 k8s_resource(
   'http-server',
   port_forwards=1234,
-  resource_deps=['http-server-go-compile', 'algorand-testnet'],
+  resource_deps=['http-server-go-compile', 'algorand'],
 )
 
