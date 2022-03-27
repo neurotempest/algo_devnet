@@ -24,7 +24,7 @@ var (
 
 func RegisterRoutes(r *httprouter.Router, baseURL string) {
 
-	fmt.Println("algod on:", *algodHost)
+	fmt.Println("hello katya")
 
 	r.ServeFiles("/static/*filepath", http.Dir(*staticDir))
 	r.GET("/", handleIndex())
@@ -75,8 +75,6 @@ func handleAccountInfo() httprouter.Handle {
 	if err != nil {
 		log.Fatal("error reading algod token from `", *algodTokenPath, "`:", err.Error())
 	}
-
-	token = []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 	algodClient, err := algod.MakeClient(*algodHost, string(token))
 	if err != nil {

@@ -8,12 +8,20 @@ docker_build(
   dockerfile='deployments/Dockerfile.algo',
 )
 
+docker_build(
+  ref='algo_indexer',
+  context='./algorand',
+  dockerfile='deployments/Dockerfile.algo_indexer',
+)
+
 k8s_yaml('deployments/algo_testnet_k8s.yaml')
 
 k8s_resource(
   'algorand',
   port_forwards = [
       port_forward(4001, name = "Algorand RPC", host = 'localhost'),
+      port_forward(4002, name = "Algorand KMD RPC", host = 'localhost'),
+      port_forward(4003, name = "Algorand Indexer", host = 'localhost'),
   ],
 )
 
@@ -31,7 +39,7 @@ docker_build_with_restart(
   entrypoint=['/app/build/http-server-go', '--algod_host=http://algorand:4001'],
   dockerfile='deployments/Dockerfile.http_server',
   only=[
-    './algorand/token',
+    './algorand',
     './build',
     './http_server/priv',
     './http_server/static',

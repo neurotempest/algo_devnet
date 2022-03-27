@@ -18,4 +18,10 @@ spec:
         image: http-server-image
         ports:
         - containerPort: 1234
+        #livenessProbe:
+        #  httpGet:
+        #    path: /health
+        #    port: 1234
+        #  initialDelaySeconds: 3
+        #  periodSeconds: 3
 

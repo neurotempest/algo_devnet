@@ -5,6 +5,7 @@ ADD goal_template.json /setup/
 
 RUN ./goal network create -n sandnet -r /network -t /setup/goal_template.json && echo rawr
 
-ADD token /network/Node/algod.token
+ADD algod.token /network/Node/algod.token
 ADD node_config.json /network/Node/config.json
-
+ADD kmd.token /network/Node/kmd-v0.5/kmd.token
+ADD kmd_config.json /network/Node/kmd-v0.5/kmd_config.json
